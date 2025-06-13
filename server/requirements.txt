@@ -1,0 +1,10 @@
+Flask
+Flask-CORS
+Flask-SQLAlchemy
+Flask-Migrate
+psycopg2-binary
+python-dotenv
+pdfminer.six  # or PyMuPDF for PDF parsing
+transformers  # if using HuggingFace models
+google-generativeai
+pdfminer
