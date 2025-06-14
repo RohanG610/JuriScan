@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
+import Navbar from "@/components/custom/navbar";
 
-export default function Home() {
+export default function ChatPage() {
   const [file, setFile] = useState<File | null>(null);
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,10 +37,12 @@ export default function Home() {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="flex h-screen overflow-hidden">
       <aside className="w-64 bg-zinc-900 text-white p-4 space-y-4 overflow-y-auto">
         <h2 className="text-lg font-bold">Recent Documents</h2>
-        <ul className="space-y- text-sm">
+        <ul className="space-y-1 text-sm">
           <p className="text-zinc-400">No recent files</p>
         </ul>
       </aside>
@@ -77,5 +80,6 @@ export default function Home() {
         </div>
       </main>
     </div>
+    </>
   );
 }
