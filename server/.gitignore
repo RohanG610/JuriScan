@@ -1,4 +1,6 @@
 .env
+app\__pycache__
+
 
 # Editor directories and files
 .vscode/*
