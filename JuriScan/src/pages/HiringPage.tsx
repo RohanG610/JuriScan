@@ -1,14 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import FilterSelect from "@/components/custom/filterSelect";
+import LawyerProfileModal from "@/components/custom/laywersProfileModal";
 import Navbar from "@/components/custom/navbar";
 
 const lawyers = [
@@ -26,6 +20,15 @@ const lawyers = [
     rate: "$120/hr",
     location: "Los Angeles, CA",
     specialization: "Family Law",
+    availability: "Weekends",
+    languages: "English, French",
+    bio: "Passionate about supporting families through legal matters with empathy and dedication.",
+  },
+  {
+    name: "Jaden Smith",
+    rate: "$170/hr",
+    location: "Los Angeles, CA",
+    specialization: "Divorce Law",
     availability: "Weekends",
     languages: "English, French",
     bio: "Passionate about supporting families through legal matters with empathy and dedication.",
@@ -66,6 +69,8 @@ export default function LawyerHiringPage() {
     );
   });
 
+  const [selectedLawyer, setSelectedLawyer] = useState<null | typeof lawyers[0]>(null);
+
   return (
     <>
     <Navbar/>
@@ -75,72 +80,62 @@ export default function LawyerHiringPage() {
         <h2 className="text-xl font-semibold mb-2">Filter Lawyers</h2>
 
         <div className="w-full space-y-4">
-          <div>
-            <Label>Service Rate</Label>
-            <Select onValueChange={(value) => handleFilterChange("rate", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Rate" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="100">Up to $100/hr</SelectItem>
-                <SelectItem value="150">Up to $150/hr</SelectItem>
-                <SelectItem value="200">Up to $200/hr</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <FilterSelect
+            label="Service Rate"
+            placeholder="Select Rate"
+            value={filters.rate}
+            onChange={(value) => handleFilterChange("rate", value)}
+            options={[
+              { value: "100", label: "Up to $100/hr" },
+              { value: "150", label: "Up to $150/hr" },
+              { value: "200", label: "Up to $200/hr" },
+            ]}
+          />
 
-          <div>
-            <Label>Location</Label>
-            <Select onValueChange={(value) => handleFilterChange("location", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="new york">New York</SelectItem>
-                <SelectItem value="los angeles">Los Angeles</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <FilterSelect
+            label="Location"
+            placeholder="Select Location"
+            value={filters.location}
+            onChange={(value) => handleFilterChange("location", value)}
+            options={[
+              { value: "new york", label: "New York" },
+              { value: "los angeles", label: "Los Angeles" },
+            ]}
+          />
 
-          <div>
-            <Label>Specialization</Label>
-            <Select onValueChange={(value) => handleFilterChange("specialization", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Area of Law" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="corporate">Corporate Law</SelectItem>
-                <SelectItem value="family">Family Law</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <FilterSelect
+            label="Specialization"
+            placeholder="Select Area of Law"
+            value={filters.specialization}
+            onChange={(value) => handleFilterChange("specialization", value)}
+            options={[
+              { value: "corporate", label: "Corporate Law" },
+              { value: "family", label: "Family Law" },
+            ]}
+          />
 
-          <div>
-            <Label>Availability</Label>
-            <Select onValueChange={(value) => handleFilterChange("availability", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Availability" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="weekdays">Weekdays</SelectItem>
-                <SelectItem value="weekends">Weekends</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <FilterSelect
+            label="Availability"
+            placeholder="Select Availability"
+            value={filters.availability}
+            onChange={(value) => handleFilterChange("availability", value)}
+            options={[
+              { value: "weekdays", label: "Weekdays" },
+              { value: "weekends", label: "Weekends" },
+            ]}
+          />
 
-          <div>
-            <Label>Languages</Label>
-            <Select onValueChange={(value) => handleFilterChange("language", value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select Language" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="english">English</SelectItem>
-                <SelectItem value="spanish">Spanish</SelectItem>
-                <SelectItem value="french">French</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <FilterSelect
+            label="Languages"
+            placeholder="Select Language"
+            value={filters.language}
+            onChange={(value) => handleFilterChange("language", value)}
+            options={[
+              { value: "english", label: "English" },
+              { value: "spanish", label: "Spanish" },
+              { value: "french", label: "French" },
+            ]}
+          />
 
           <Button variant="secondary" onClick={clearFilters} className="w-full mt-2">
             Clear Filters
@@ -150,40 +145,52 @@ export default function LawyerHiringPage() {
 
       {/* Lawyer List */}
       <section className="flex-1 pl-8 space-y-6">
-        {filteredLawyers.map((lawyer, idx) => {
-          const initials = lawyer.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("");
+        {filteredLawyers.length === 0 ? (
+          <p className="text-gray-500">No lawyers match the selected filters.</p>
+        ) : (
+          filteredLawyers.map((lawyer, idx) => {
+            const initials = lawyer.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("");
+          
+            return (
+              <Card key={idx} className="w-full shadow-sm flex items-start gap-4 p-4">
+                <div className="bg-blue-100 text-blue-800 font-bold w-12 h-12 rounded-full flex items-center justify-center text-xl">
+                  {initials}
+                </div>
+                <CardContent className="p-0 space-y-2">
+                  <h3 className="text-2xl font-semibold text-gray-900">{lawyer.name}</h3>
+                  <p className="text-gray-700">
+                    <strong>Rate:</strong> {lawyer.rate}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Location:</strong> {lawyer.location}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Specialization:</strong> {lawyer.specialization}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Availability:</strong> {lawyer.availability}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Languages:</strong> {lawyer.languages}
+                  </p>
+                  <p className="text-gray-600 italic">{lawyer.bio}</p>
+                  <Button className="mt-2" onClick={() => setSelectedLawyer(lawyer)}>
+                    View Profile
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })
+        )}
 
-          return (
-            <Card key={idx} className="w-full shadow-sm flex items-start gap-4 p-4">
-              <div className="bg-blue-100 text-blue-800 font-bold w-12 h-12 rounded-full flex items-center justify-center text-xl">
-                {initials}
-              </div>
-              <CardContent className="p-0 space-y-2">
-                <h3 className="text-2xl font-semibold text-gray-900">{lawyer.name}</h3>
-                <p className="text-gray-700">
-                  <strong>Rate:</strong> {lawyer.rate}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Location:</strong> {lawyer.location}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Specialization:</strong> {lawyer.specialization}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Availability:</strong> {lawyer.availability}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Languages:</strong> {lawyer.languages}
-                </p>
-                <p className="text-gray-600 italic">{lawyer.bio}</p>
-                <Button className="mt-2">View Profile</Button>
-              </CardContent>
-            </Card>
-          );
-        })}
+        {/* Modal overlay */}
+        <LawyerProfileModal
+          lawyer={selectedLawyer}
+          onClose={() => setSelectedLawyer(null)}
+        />
       </section>
     </div>
     </>
