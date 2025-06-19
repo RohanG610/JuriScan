@@ -3,6 +3,7 @@ app\__pycache__
 
 
 # Editor directories and files
+.pyc
 .vscode/*
 !.vscode/extensions.json
 .idea
