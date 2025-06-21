@@ -49,14 +49,6 @@ export default function DashboardPage() {
         {/* Main Panel */}
         <main className="flex-1 p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* + Add New Card */}
-            <Card className="h-48 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition">
-              <CardContent className="flex flex-col items-center justify-center h-full">
-                <Plus className="w-8 h-8 text-gray-500" />
-                <span className="mt-2 text-gray-600 font-semibold">Add New</span>
-              </CardContent>
-            </Card>
-
             {/* Activity Cards */}
             {mockActivities.map((activity, index) => (
               <Card key={index} className="h-48 p-4">
