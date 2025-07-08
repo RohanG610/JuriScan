@@ -5,6 +5,8 @@ import ChatPage from "./pages/ChatPage";
 import HiringPage from "./pages/HiringPage";
 import AboutUsPage from "./pages/AboutPage";
 import Dashboard from "./pages/DashboardPage";
+import UploadPage from "./pages/UploadPage";
+import ChatRoom from "./pages/ChatRoom";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,6 +35,8 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/hiring" element={<HiringPage />} />
         <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/upload" element={<UploadPage />} />
+        <Route path="/chat" element={<ChatRoom />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,36 +1,90 @@
-import { useState } from "react";
-import { Button } from "../components/ui/button";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
+import { Button } from "@/components/ui/button";
+import ChatMessage from "@/components/custom/ChatMessage";
+import FileUploader from "@/components/custom/FileUploader";
 import Navbar from "@/components/custom/navbar";
 
-export default function ChatPage() {
-  const [file, setFile] = useState<File | null>(null);
-  const [summary, setSummary] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [highlights, setHighlights] = useState<string[]>([]);
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+export default function ChatPage() {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<number | null>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      chatRef.current?.scrollTo({
+        top: chatRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 50);
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const newMessage: Message = { role: "user", content: input };
+    setMessages((prev) => [...prev, newMessage]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/chat/reply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ session_id: sessionId, message: input }),
+      });
+
+      const data = await res.json();
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.response },
+      ]);
+    } catch (err) {
+      console.error("Failed to get response:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) return;
+  const handleFileUpload = async (file: File) => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/summarize", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const res = await fetch("http://localhost:5000/chat/upload", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
       });
-      setSummary(res.data.summary);
-      setHighlights(res.data.highlights || []);
+
+      const data = await res.json();
+      setSessionId(data.session_id);
+
+      setMessages([
+        {
+          role: "assistant",
+          content: `📄 **Summary:**\n${data.summary}\n\n🚩 **Red Flags:**\n${data.red_flags}`,
+        },
+      ]);
     } catch (err) {
-      console.error("Error uploading file", err);
-      setSummary("Something went wrong. Try again.");
+      console.error("Upload failed:", err);
     } finally {
       setLoading(false);
     }
@@ -38,48 +92,42 @@ export default function ChatPage() {
 
   return (
     <>
-    <Navbar />
-    <div className="flex h-screen overflow-hidden">
-      <aside className="w-64 bg-zinc-900 text-white p-4 space-y-4 overflow-y-auto">
-        <h2 className="text-lg font-bold">Recent Documents</h2>
-        <ul className="space-y-1 text-sm">
-          <p className="text-zinc-400">No recent files</p>
-        </ul>
-      </aside>
-      <main className="flex-1 overflow-y-auto p-8 bg-gray-50 dark:bg-zinc-950 text-black dark:text-white">
-        <div className="max-w-3xl mx-auto flex flex-col space-y-6">
-          <h1 className="text-3xl font-bold text-center">Upload Legal Documents</h1>
-          <div className="relative w-full">
-          <Input
-            className="border-3 border-sky-400 p-rounded-md bg-white text-black dark-text-black"
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-          />
-          </div>
-          <Button onClick={handleUpload} disabled={loading||!file}>
-            {loading?"Summarizing...":"Upload & Summarize"}
-          </Button>
-          { summary && (
-            <div className="mt-4 bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-md">
-              <h2 className="text-2xl font-semibold mb-4">Summary</h2>
-              <p className="text-gray-800 dark:text-gray-100 whitespace-pre-wrap">{summary}</p>
-            </div>
-          )}
-
-          {highlights.length>0 && (
-            <div className="mt-4 bg-slate-100 dark:bg-zinc-800 p-6 rounded-xl">
-              <h2 className="text-xl font-semibold mb-">Highlighted Clause</h2>
-              <ul className="list-disc list-inside text-gray-700 dark:text-gray-200 space-y-1">
-                {highlights.map((item, i)=>(
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+      <Navbar />
+      <main className="flex flex-col h-screen">
+        {/* File upload section */}
+        <div className="border-b p-4">
+          <FileUploader onUpload={handleFileUpload} loading={loading} />
         </div>
+
+        {/* Chat messages */}
+        <div
+          ref={chatRef}
+          className="flex-1 overflow-y-auto p-4 bg-slate-100 space-y-2"
+        >
+          {messages.map((msg, index) => (
+            <ChatMessage key={index} role={msg.role} message={msg.content} />
+          ))}
+        </div>
+
+        {/* Input section */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSend();
+          }}
+          className="flex items-center gap-2 border-t p-4"
+        >
+          <Input
+            className="flex-1"
+            placeholder="Type your message..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <Button type="submit" disabled={loading}>
+            {loading ? "..." : "Send"}
+          </Button>
+        </form>
       </main>
-    </div>
     </>
   );
 }
