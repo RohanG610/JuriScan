@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,47 +7,30 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
+const navItems = [['Home',''], ['About Us','about'], ['Hire A Lawyer!','hiring']]
+
 export default function Navbar() {
 
   return (
     <>
-      <nav className="w-full p-4 bg-white dark:bg-zinc-900 shadow-md flex items-center justify-between">
+      <nav className="w-full px-6 py-3 bg-white dark:bg-zinc-900 shadow-lg flex items-center justify-between">
         <div className="text-xl font-bold text-black dark:text-white">Juri-Scan</div>
         <NavigationMenu>
           <NavigationMenuList>
-            <NavigationMenuItem>
-              <Link to="/" className="text-sm font-bold">
+            { navItems.map(([item,route])=>(
+              <NavigationMenuItem>
+              <Link to={`/${route}`} className="text-sm font-semibold">
                 <NavigationMenuLink
                   className={cn(
-                    "px-4 py-2 transition-colors hover:text-primary focus:text-primary text-black dark:text-white"
+                    " px-4 py-2 transition-colors hover:text-primary focus:text-primary text-black dark:text-white"
                   )}
-                >
-                  Home
+                  >
+                  {item}
                 </NavigationMenuLink>
               </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/about" className="text-sm font-bold">
-                <NavigationMenuLink
-                  className={cn(
-                    "px-4 py-2 transition-colors hover:text-primary focus:text-primary text-black dark:text-white"
-                  )}
-                >
-                  About Us
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link to="/hiring" className="text-sm font-bold">
-                <NavigationMenuLink
-                  className={cn(
-                    "px-4 py-2 transition-colors hover:text-primary focus:text-primary text-black dark:text-white"
-                  )}
-                >
-                  Hire A Lawyer!
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
+              </NavigationMenuItem>
+            ))
+            }
           </NavigationMenuList>
         </NavigationMenu>
       </nav>
