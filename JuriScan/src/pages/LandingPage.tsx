@@ -9,18 +9,18 @@ import LoginModal from "@/components/custom/loginModal";
 const descCardData = [
   {
     number: 1,
-    title: "Summarize your Document",
-    desc: "Summarize your legal documents by using State-of-the-Art Ai models",
+    title: "Summarize and Analyze your Document",
+    desc: "Summarize and Analyze your legal documents by using State-of-the-Art AI models",
   },
   {
     number: 2,
-    title: "Analyze your Documents",
-    desc: "Analyze your documents to find vague language, clause",
+    title: "Manage Your Cases and Court Hearings",
+    desc: "Use AI and feed your court cases and hearings via document or text,To get best outcome.",
   },
   {
     number: 3,
-    title: "Hire a Lawyer",
-    desc: "Confused about what to do next? Hire a lawyer at a reasonable price",
+    title: "Hire a Certified Lawyer quickly and easily",
+    desc: "Confused about what to do next? Hire a professional lawyer at a reasonable price",
   },
 ];
 
@@ -76,22 +76,27 @@ const LandingPage: FC = () => {
 
 
       <section>
-        <div className="flex flex-col items-center justify-center p-4 min-h-[45vh] bg-gray-100">
-          <h1 className="text-3xl font-bold mb-8 text-center">What we can do?</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-16 w-full max-w-5xl min-h-[30vh]">
+        <div className="flex flex-col items-center justify-center px-4 py-10 min-h-[45vh] bg-gray-100">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 text-center">
+            What you can do?
+          </h1>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-16 w-full max-w-6xl min-h-[30vh] px-2 sm:px-4">
             {descCardData.map(({ number, title, desc }) => (
               <Card
                 key={number}
                 className="group rounded-2xl transform transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
               >
-                <CardContent className="flex flex-col items-center justify-center text-center py-10 px-6 min-h-[280px] transition-colors duration-300">
-                  <div className="text-3xl font-extrabold text-gray-700 mb-4 group-hover:text-blue-600">
+                <CardContent className="flex flex-col items-center justify-center text-center py-8 px-4 sm:px-6 min-h-[260px] transition-colors duration-300">
+                  <div className="text-2xl sm:text-3xl font-extrabold text-gray-700 mb-4 group-hover:text-blue-600">
                     {number}
                   </div>
-                  <h2 className="text-lg font-semibold mb-2 group-hover:text-blue-600">
+                  <h2 className="text-base sm:text-lg font-semibold mb-2 group-hover:text-blue-600">
                     {title}
                   </h2>
-                  <p className="text-gray-500 group-hover:text-blue-600">{desc}</p>
+                  <p className="text-sm sm:text-base text-gray-500 group-hover:text-blue-600">
+                    {desc}
+                  </p>
                 </CardContent>
               </Card>
             ))}
