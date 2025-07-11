@@ -1,5 +1,5 @@
 .env
-app\__pycache__
+server\app\__pycache__
 
 
 # Editor directories and files

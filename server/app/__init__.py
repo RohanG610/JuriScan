@@ -15,7 +15,8 @@ def create_app():
 
     from .routes import main
     from .auth import auth
-
+    from .chat import chat
+    app.register_blueprint(chat)
     app.register_blueprint(main)
     app.register_blueprint(auth)
 
