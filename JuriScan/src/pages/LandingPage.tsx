@@ -40,30 +40,40 @@ const LandingPage: FC = () => {
     navigate("/dashboard");
   };
 
-  // const handleLoginSuccess = () => {
-  // setIsModalOpen(false);
-  // navigate("/dashboard"); // ✅ guarantees navigation
-  // };
-
   return (
     <>
       <Navbar />
-      <main className="min-h-[60vh] bg-gradient-to-br from-slate-100 to-white flex flex-col items-center justify-center px-4 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
-          Juri-Scan
-        </h1>
-        <p className="text-lg md:text-xl text-gray-600 max-w-xl mb-8">
-          Upload contracts, terms &amp; conditions, or agreements — and let AI summarize, analyze, and flag critical clauses instantly.
-        </p>
-        {!isLoggedIn && (
-          <Button
-            className="text-lg px-6 py-3 rounded-2xl shadow-md"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Login / Sign Up
-          </Button>
-        )}
+      <main className="min-h-[65vh] bg-gradient-to-br from-slate-100 to-white flex flex-col md:flex-row items-center justify-between px-6 md:px-10 text-center md:text-left">
+        <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start mb-10 md:mb-0">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
+            Manage your Legal <br className="hidden md:block" />
+            Documents, Cases, Lawyers <br className="hidden md:block" />
+            With AI
+          </h1>
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 mb-8 max-w-xl">
+            Upload contracts, terms &amp; conditions, or agreements — and let AI summarize, analyze, and flag critical clauses instantly.
+          </p>
+          {!isLoggedIn && (
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button
+                className="text-base md:text-lg px-6 py-3 shadow-md"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Login / Sign Up
+              </Button>
+              <Button
+                className="text-base md:text-lg px-6 py-3 shadow-md"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Continue with Google
+              </Button>
+            </div>
+          )}
+        </div>
+        
+        <div className="w-full md:w-[40%] h-[60vw] md:h-[25vw] bg-amber-100 border-2 border-amber-300 rounded-xl shadow-md"></div>
       </main>
+
 
       <section>
         <div className="flex flex-col items-center justify-center p-4 min-h-[45vh] bg-gray-100">
