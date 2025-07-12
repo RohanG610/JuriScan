@@ -21,6 +21,7 @@ print("✅ PostgreSQL connected successfully.")
 @auth.route("/auth/register", methods=["POST"])
 def register():
     data = request.json
+    name = data.get("name")
     email = data.get("email")
     password = data.get("password")
     role = data.get("role", "citizen")
@@ -35,8 +36,8 @@ def register():
 
         hashed_password = generate_password_hash(password)
         cursor.execute(
-            "INSERT INTO users (email, password, role) VALUES (%s, %s, %s)",
-            (email, hashed_password, role)
+            "INSERT INTO users (email, password, role, name) VALUES (%s, %s, %s, %s)",
+            (email, hashed_password, role, name)
         )
         conn.commit()
 
