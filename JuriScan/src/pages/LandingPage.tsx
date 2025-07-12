@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/custom/navbar";
 import LoginModal from "@/components/custom/loginModal";
+import googleLogo from "../assets/google_logo.svg"
 
 const descCardData = [
   {
@@ -40,6 +41,10 @@ const LandingPage: FC = () => {
     navigate("/dashboard");
   };
 
+  const handlegoogleOAuth = () => {
+    window.location.href = "http://localhost:5000/auth/google";
+  }
+
   return (
     <>
       <Navbar />
@@ -56,16 +61,22 @@ const LandingPage: FC = () => {
           {!isLoggedIn && (
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                className="text-base md:text-lg px-6 py-3 shadow-md"
+                className="text-base md:text-lg px-6 py-3 border-1 shadow-md border-[#8E918F] border-r-1"
                 onClick={() => setIsModalOpen(true)}
               >
                 Login / Sign Up
               </Button>
+
               <Button
-                className="text-base md:text-lg px-6 py-3 shadow-md"
-                onClick={() => setIsModalOpen(true)}
+                className="text-base md:text-lg px-6 py-3 shadow-md bg-[#131314] border-1 border-[#8E918F]"
+                onClick={() => handlegoogleOAuth()}
               >
-                Continue with Google
+                <img
+                  src={googleLogo}
+                  alt="Google Logo"
+                  className="h-[18px] w-[18px]" // as per Google guidelines
+                />
+                <p className="text-base md:text-lg">Continue with Google</p>
               </Button>
             </div>
           )}
