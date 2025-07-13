@@ -1,10 +1,9 @@
-// components/DashboardPage.tsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/custom/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 
 const mockActivities = [
   {
@@ -32,35 +31,42 @@ export default function DashboardPage() {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen bg-[#0e0e0e] text-white">
         {/* Sidebar */}
-        <aside className="w-64 bg-gray-200 p-4 space-y-4">
-          <Button variant="outline" className="w-full justify-start text-lg">
-            Home
-          </Button>
-          <Button variant="outline" className="w-full justify-start text-lg">
-            Recent Files
-          </Button>
-          <Button variant="outline" className="w-full justify-start text-lg">
-            Setting
-          </Button>
+        <aside className="w-72 p-4 bg-[#111111] border-r border-gray-800 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a]">
+              New Chat
+            </Button>
+            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a]">
+              Recent Files
+            </Button>
+            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a]">
+              Setting
+            </Button>
+          </div>
+
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold mb-2 text-white">Recent Activity</h2>
+            <div className="space-y-2">
+              {mockActivities.map((activity, index) => (
+                <Card key={index} className="bg-[#1a1a1a] text-white border-none">
+                  <CardContent className="p-4 space-y-1">
+                    <h3 className="font-semibold">{activity.title}</h3>
+                    <p className="text-sm text-gray-400">{activity.description}</p>
+                    <p className="text-xs text-gray-500">{activity.time}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </aside>
 
-        {/* Main Panel */}
-        <main className="flex-1 p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Activity Cards */}
-            {mockActivities.map((activity, index) => (
-              <Card key={index} className="h-48 p-4">
-                <CardContent className="flex flex-col justify-between h-full">
-                  <div>
-                    <h3 className="text-lg font-bold">{activity.title}</h3>
-                    <p className="text-gray-600">{activity.description}</p>
-                  </div>
-                  <p className="text-sm text-gray-400">{activity.time}</p>
-                </CardContent>
-              </Card>
-            ))}
+        {/* Main Content */}
+        <main className="flex-1 flex items-center justify-center">
+          <div className="bg-[#1a1a1a] p-8 rounded-xl border border-gray-800 flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition">
+            <UploadCloud className="h-8 w-8 text-gray-300" />
+            <p className="text-lg text-gray-300">Upload a file</p>
           </div>
         </main>
       </div>
