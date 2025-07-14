@@ -64,7 +64,7 @@ export default function DashboardPage() {
 
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center">
-          <div className="bg-[#1a1a1a] p-8 rounded-xl border border-gray-800 flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition">
+          <div className="bg-[#1a1a1a] min-w-4/5 p-8 rounded-xl border border-gray-800 flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition">
             <UploadCloud className="h-8 w-8 text-gray-300" />
             <p className="text-lg text-gray-300">Upload a file</p>
           </div>
