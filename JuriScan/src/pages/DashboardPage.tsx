@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/custom/navbar";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ const mockActivities = [
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,6 +28,36 @@ export default function DashboardPage() {
       navigate("/", { replace: true });
     }
   }, [navigate]);
+
+  const handleDivClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+        // headers not needed for multipart/form-data with FormData
+      });
+
+      if (res.ok) {
+        alert("File uploaded successfully!");
+        // optionally refresh activities list here
+      } else {
+        alert("Upload failed.");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Something went wrong.");
+    }
+  };
 
   return (
     <>
@@ -64,9 +95,19 @@ export default function DashboardPage() {
 
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center">
-          <div className="bg-[#1a1a1a] min-w-4/5 p-8 rounded-xl border border-gray-800 flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition">
+          <div
+            onClick={handleDivClick}
+            className="bg-[#1a1a1a] min-w-4/5 p-8 rounded-xl border border-gray-800 flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition cursor-pointer"
+          >
             <UploadCloud className="h-8 w-8 text-gray-300" />
             <p className="text-lg text-gray-300">Upload a file</p>
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+            />
           </div>
         </main>
       </div>
