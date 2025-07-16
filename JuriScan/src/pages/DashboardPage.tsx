@@ -44,12 +44,10 @@ export default function DashboardPage() {
       const res = await fetch("http://localhost:5000/upload", {
         method: "POST",
         body: formData,
-        // headers not needed for multipart/form-data with FormData
       });
 
       if (res.ok) {
         alert("File uploaded successfully!");
-        // optionally refresh activities list here
       } else {
         alert("Upload failed.");
       }
@@ -66,28 +64,24 @@ export default function DashboardPage() {
         {/* Sidebar */}
         <aside className="w-72 p-4 bg-[#111111] border-r border-gray-800 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a]">
+            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
               New Chat
             </Button>
-            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a]">
+            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
               Recent Files
             </Button>
-            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a]">
+            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
               Setting
             </Button>
           </div>
 
           <div className="mt-6">
             <h2 className="text-lg font-semibold mb-2 text-white">Recent Activity</h2>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2 space-y-1">
               {mockActivities.map((activity, index) => (
-                <Card key={index} className="bg-[#1a1a1a] text-white border-none">
-                  <CardContent className="p-4 space-y-1">
-                    <h3 className="font-semibold">{activity.title}</h3>
-                    <p className="text-sm text-gray-400">{activity.description}</p>
-                    <p className="text-xs text-gray-500">{activity.time}</p>
-                  </CardContent>
-                </Card>
+                  <Button key={index} variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
+                    {activity.title}
+                  </Button>
               ))}
             </div>
           </div>
