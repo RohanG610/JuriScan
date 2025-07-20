@@ -4,11 +4,17 @@ export default function AboutUsPage() {
   return (
     <>
       <Navbar />
-        <div className="m-0 p-0 min-w-[100%] min-h-[25vh] bg-amber-600">
-          <h1 className="text-4xl font-bold mb-6 text-center text-[#6bcec4] justify-self-start p-6">About Us</h1>
-        </div>
-      <main className="min-h-fit px-6 py-12 bg-white text-gray-800 max-w-4xl mx-auto flex-col justify-center m-5">
-        <section className="space-y-6 text-lg">
+
+      {/* Hero Header */}
+      <div className="w-full min-h-[25vh] bg-[#1A1C22] border-b border-[#2C2F36] flex items-center justify-center">
+        <h1 className="text-4xl font-bold text-center text-[#4F46E5] p-6">
+          About Us
+        </h1>
+      </div>
+
+      {/* Main Content */}
+      <main className="px-6 py-12 bg-[#0F1117] text-[#E5E7EB] flex justify-center">
+        <section className="max-w-4xl w-full bg-[#1A1C22] rounded-xl p-8 md:p-12 shadow-md border border-[#2C2F36] animate-fade-in space-y-6 text-lg">
           <p>
             <strong>JuriScan</strong> is an AI-powered legal assistant platform designed to make legal document review fast, smart, and accessible. Whether you are a lawyer, a client, or someone reviewing terms and contracts, JuriScan helps you summarize, analyze, and understand critical legal information with ease.
           </p>
@@ -21,29 +27,38 @@ export default function AboutUsPage() {
           <p>
             We are committed to building transparency and trust in legal tech, aiming to assist with everything from quick contract reviews to in-depth document analysis.
           </p>
-          <p className="text-center mt-10">
+          <p className="text-center mt-10 text-[#9CA3AF]">
             <strong>Made with ❤️ for you.</strong>
           </p>
         </section>
       </main>
-      <footer className="bg-black text-white py-6 px-4">
+
+      {/* Footer */}
+      <footer className="bg-[#0F1117] text-[#9CA3AF] py-6 px-4 border-t border-[#2C2F36]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           <div className="text-center sm:text-left">
             © {new Date().getFullYear()} JuriScan. All rights reserved.
           </div>
           <div className="flex gap-6">
-            <a href="#about" className="hover:underline">
-              About
-            </a>
-            <a href="#services" className="hover:underline">
-              Services
-            </a>
-            <a href="#contact" className="hover:underline">
-              Contact
-            </a>
+            <a href="/about" className="hover:text-[#4F46E5] transition-colors">About</a>
+            <a href="/services" className="hover:text-[#4F46E5] transition-colors">Services</a>
+            <a href="/contact" className="hover:text-[#4F46E5] transition-colors">Contact</a>
           </div>
         </div>
       </footer>
+
+      {/* Tailwind animation class (optional in globals.css) */}
+      <style>
+        {`
+          @keyframes fade-in {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .animate-fade-in {
+            animation: fade-in 0.6s ease-out both;
+          }
+        `}
+      </style>
     </>
   );
 }
