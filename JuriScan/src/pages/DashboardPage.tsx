@@ -60,28 +60,41 @@ export default function DashboardPage() {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen bg-[#0e0e0e] text-white">
+      <div className="flex min-h-screen bg-[#0F1117] text-[#E5E7EB]">
         {/* Sidebar */}
-        <aside className="w-72 p-4 bg-[#111111] border-r border-gray-800 flex flex-col gap-4">
+        <aside className="w-72 p-4 bg-[#1A1C22] border-r border-[#2C2F36] flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
+            <Button
+              variant="ghost"
+              className="justify-start text-left text-[#E5E7EB] font-medium hover:bg-[#1F232C] hover:text-[#4F46E5]"
+            >
               New Chat
             </Button>
-            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
+            <Button
+              variant="ghost"
+              className="justify-start text-left text-[#E5E7EB] font-medium hover:bg-[#1F232C] hover:text-[#4F46E5]"
+            >
               Recent Files
             </Button>
-            <Button variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
-              Setting
+            <Button
+              variant="ghost"
+              className="justify-start text-left text-[#E5E7EB] font-medium hover:bg-[#1F232C] hover:text-[#4F46E5]"
+            >
+              Settings
             </Button>
           </div>
 
           <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-2 text-white">Recent Activity</h2>
-            <div className="flex flex-col gap-2 space-y-1">
+            <h2 className="text-lg font-semibold mb-2 text-[#E5E7EB]">Recent Activity</h2>
+            <div className="flex flex-col gap-1">
               {mockActivities.map((activity, index) => (
-                  <Button key={index} variant="ghost" className="justify-start text-left text-white font-medium hover:bg-[#1a1a1a] hover:text-amber-50">
-                    {activity.title}
-                  </Button>
+                <Button
+                  key={index}
+                  variant="ghost"
+                  className="justify-start text-left text-[#9CA3AF] font-normal hover:bg-[#1F232C] hover:text-[#4F46E5]"
+                >
+                  {activity.title}
+                </Button>
               ))}
             </div>
           </div>
@@ -91,10 +104,10 @@ export default function DashboardPage() {
         <main className="flex-1 flex items-center justify-center">
           <div
             onClick={handleDivClick}
-            className="bg-[#1a1a1a] min-w-4/5 p-8 rounded-xl border border-gray-800 flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition cursor-pointer"
+            className="bg-[#1A1C22] w-[90%] max-w-xl p-8 rounded-xl border border-[#2C2F36] flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition cursor-pointer"
           >
-            <UploadCloud className="h-8 w-8 text-gray-300" />
-            <p className="text-lg text-gray-300">Upload a file</p>
+            <UploadCloud className="h-8 w-8 text-[#9CA3AF]" />
+            <p className="text-lg text-[#9CA3AF]">Upload a file</p>
             <input
               type="file"
               accept=".pdf,.doc,.docx"
