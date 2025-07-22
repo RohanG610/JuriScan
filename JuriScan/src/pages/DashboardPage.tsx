@@ -40,13 +40,22 @@ export default function DashboardPage() {
     const formData = new FormData();
     formData.append("file", file);
 
+    const token = localStorage.getItem("token")
+
     try {
       const res = await fetch("http://localhost:5000/upload", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
         body: formData,
       });
 
       if (res.ok) {
+        const data = await res.json();
+        console.log("Session ID:", data.session_id);
+        console.log("Summary:", data.summary);
+        console.log("Red Flags:", data.red_flags);
         alert("File uploaded successfully!");
       } else {
         alert("Upload failed.");

@@ -24,11 +24,10 @@ def upload_file():
     user_email = get_jwt_identity()
     file = request.files["file"]
     filename = secure_filename(file.filename)
-    filepath = os.path.join("uploads", filename)
+    filepath = os.path.join("uploads/", filename)
     file.save(filepath)
 
     text = extract_text_from_pdf(filepath)
-
     summary_prompt = f"Summarize this legal document:\n{text[:1500]}"
     red_flags_prompt = f"Identify red flags in this legal document:\n{text[:1500]}"
     
