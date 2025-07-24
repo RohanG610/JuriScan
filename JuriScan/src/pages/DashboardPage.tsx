@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/custom/navbar";
 import { Button } from "@/components/ui/button";
+import ChatInputBar from "@/components/custom/ChatInputBar";
+import ChatBubble from "@/components/custom/ChatBubble";
 import { Card, CardContent } from "@/components/ui/card";
 import { UploadCloud } from "lucide-react";
 
@@ -20,6 +22,13 @@ const mockActivities = [
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const [sessionData, setSessionData] = useState<{
+    sessionId: string,
+    messages: {role:"user"|"system";content:string}[];
+  }>({
+    sessionId: "",
+    messages:[],
+  })
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -53,9 +62,14 @@ export default function DashboardPage() {
 
       if (res.ok) {
         const data = await res.json();
-        console.log("Session ID:", data.session_id);
-        console.log("Summary:", data.summary);
-        console.log("Red Flags:", data.red_flags);
+        
+        setSessionData({
+          sessionId: data.session_id,
+          messages: [
+            {role: "system", content: `${data.summary}`},
+            {role: "system", content: `${data.red_flags}`}
+          ]
+        });
         alert("File uploaded successfully!");
       } else {
         alert("Upload failed.");
@@ -63,6 +77,38 @@ export default function DashboardPage() {
     } catch (error) {
       console.error("Upload error:", error);
       alert("Something went wrong.");
+    }
+  };
+
+  const handleSendMessage = async (message: string) => {
+    setSessionData(prev => ({
+      ...prev,
+      messages: [...prev.messages, { role: "user", content: message }],
+    }));
+  
+    try {
+      const token = localStorage.getItem("token");
+    
+      const res = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          session_id: sessionData.sessionId,
+          message: message,
+        }),
+      });
+    
+      const data = await res.json();
+    
+      setSessionData(prev => ({
+        ...prev,
+        messages: [...prev.messages, { role: "user", content: message }, { role: "system", content: data.response }],
+      }));
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -111,20 +157,33 @@ export default function DashboardPage() {
 
         {/* Main Content */}
         <main className="flex-1 flex items-center justify-center">
-          <div
-            onClick={handleDivClick}
-            className="bg-[#1A1C22] w-[90%] max-w-xl p-8 rounded-xl border border-[#2C2F36] flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition cursor-pointer"
-          >
-            <UploadCloud className="h-8 w-8 text-[#9CA3AF]" />
-            <p className="text-lg text-[#9CA3AF]">Upload a file</p>
-            <input
-              type="file"
-              accept=".pdf,.doc,.docx"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="hidden"
-            />
-          </div>
+          {sessionData.sessionId === "" ? (
+            //Upload a File
+            <div
+              onClick={handleDivClick}
+              className="bg-[#1A1C22] w-[90%] max-w-xl p-8 rounded-xl border border-[#2C2F36] flex flex-col items-center gap-4 shadow-lg hover:shadow-xl transition cursor-pointer"
+            >
+              <UploadCloud className="h-8 w-8 text-[#9CA3AF]" />
+              <p className="text-lg text-[#9CA3AF]">Upload a file</p>
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-between w-full h-screen">
+              <div className="flex-2 overflow-y-auto flex flex-col items-center px-4 pt-6 space-y-4">
+                {sessionData.messages.map((msg, i) => (
+                  <ChatBubble key={i} role={msg.role} content={msg.content} />
+                ))}
+              </div>
+              <ChatInputBar onSend={handleSendMessage} />
+            </div>
+
+          )}
         </main>
       </div>
     </>

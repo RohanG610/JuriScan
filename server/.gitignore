@@ -1,6 +1,6 @@
 .env
-app\__pycache__
-
+server/app/__pycache__/
+__pycache__/
 
 # Editor directories and files
 .pyc
