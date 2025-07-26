@@ -115,7 +115,7 @@ export default function DashboardPage() {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen bg-[#0F1117] text-[#E5E7EB]">
+      <div className="flex min-h-[calc(100vh-3.75rem)] bg-[#0F1117] text-[#E5E7EB]">
         {/* Sidebar */}
         <aside className="w-72 p-4 bg-[#1A1C22] border-r border-[#2C2F36] flex flex-col gap-4">
           <div className="flex flex-col gap-2">

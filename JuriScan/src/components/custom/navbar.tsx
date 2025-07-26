@@ -14,7 +14,7 @@ const navItems = [
 
 export default function Navbar() {
   return (
-    <nav className="w-full px-6 py-3 bg-[#0F1117] text-[#E5E7EB] shadow-md border-b border-[#2C2F36] flex items-center justify-between">
+    <nav className="w-full h-15 px-6 py-3 bg-[#0F1117] text-[#E5E7EB] shadow-md border-b border-[#2C2F36] flex items-center justify-between">
       <div className="text-xl font-bold text-[#E5E7EB]">Juri-Scan</div>
       <NavigationMenu>
         <NavigationMenuList>
