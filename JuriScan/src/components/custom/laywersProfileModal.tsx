@@ -46,29 +46,44 @@ export default function LawyerProfileModal({ lawyer, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/10 backdrop-blur-sm flex items-center justify-center px-4">
-      <Card className="max-w-2xl w-full bg-white rounded-xl p-6 shadow-2xl relative">
-        <button className="absolute top-4 right-4" onClick={onClose}>✕</button>
-        <h2 className="text-3xl font-bold mb-2">{lawyer.name}</h2>
-        <p><strong>Specialization:</strong> {lawyer.specialization}</p>
-        <p><strong>Languages:</strong> {lawyer.languages}</p>
+    <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center px-4">
+      <Card className="max-w-2xl w-full bg-[#1A1C22] text-[#E5E7EB] rounded-xl p-6 shadow-2xl relative border border-[#2C2F36]">
+        <button
+          className="absolute top-4 right-4 text-[#9CA3AF] hover:text-[#4F46E5] transition"
+          onClick={onClose}
+        >
+          ✕
+        </button>
+
+        <h2 className="text-3xl font-bold mb-2 text-[#E5E7EB]">{lawyer.name}</h2>
+        <p className="text-[#9CA3AF]">
+          <strong className="text-[#E5E7EB]">Specialization:</strong> {lawyer.specialization}
+        </p>
+        <p className="text-[#9CA3AF]">
+          <strong className="text-[#E5E7EB]">Languages:</strong> {lawyer.languages}
+        </p>
 
         <div className="mt-4">
           <Textarea
             placeholder="Why are you hiring this lawyer?"
+            className="bg-[#0F1117] border border-[#2C2F36] text-[#E5E7EB] placeholder:text-[#9CA3AF]"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+
         <input
           type="text"
-          className="mt-2 border p-2 rounded w-full"
+          className="mt-3 p-2 w-full rounded border border-[#2C2F36] bg-[#0F1117] text-[#E5E7EB] placeholder:text-[#9CA3AF] focus:outline-none"
           placeholder="Preferred contact (email or phone)"
           value={contactMethod}
           onChange={(e) => setContactMethod(e.target.value)}
         />
-        <div className="mt-4 flex justify-end">
-          <Button onClick={handleHire}>Book Lawyer</Button>
+
+        <div className="mt-5 flex justify-end">
+          <Button className="bg-[#2563EB] hover:bg-[#1E40AF] text-white" onClick={handleHire}>
+            Book Lawyer
+          </Button>
         </div>
       </Card>
     </div>

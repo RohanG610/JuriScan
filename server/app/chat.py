@@ -16,7 +16,7 @@ chat = Blueprint("chat", __name__)
 conn = psycopg.connect(os.getenv("DATABASE_URL"))
 register_vector(conn)
 
-# client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @chat.route("/upload", methods=["POST"])
 @jwt_required()
@@ -28,33 +28,18 @@ def upload_file():
     file.save(filepath)
 
     text = extract_text_from_pdf(filepath)
-    print(text)
     summary_prompt = f"Summarize this legal document:\n{text[:1500]}"
     red_flags_prompt = f"Identify red flags in this legal document:\n{text[:1500]}"
     
-    # summary = client.chat.completions.create(
-    #     model="gpt-3.5-turbo",
-    #     messages=[{"role": "user", "content": summary_prompt}]
-    # ).choices[0].message.content
+    summary = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": summary_prompt}]
+    ).choices[0].message.content
 
-    # red_flags = client.chat.completions.create(
-    #     model="gpt-4",
-    #     messages=[{"role": "user", "content": red_flags_prompt}]
-    # ).choices[0].message.content
-
-    summary = """
-    This legal document is a Service Agreement between a freelance software developer and a startup client. It outlines the scope of services, timelines for deliverables, payment structure (including a 30% upfront deposit), and intellectual property transfer upon project completion. The agreement also includes clauses on confidentiality, dispute resolution via arbitration, and conditions for contract termination by either party with a 14-day written notice.
-    """
-
-    red_flags = """
-    1. The agreement lacks a clear clause specifying what happens in case of a missed delivery deadline.
-    2. There is no mention of liability limits in case the software causes business losses.
-    3. The dispute resolution mechanism does not specify the arbitration venue or governing law.
-    4. Intellectual property rights transfer is vaguely worded and may lead to ownership ambiguity.
-    5. The termination clause lacks clarity on refunds if the client terminates after paying the deposit.
-    """
-
-
+    red_flags = client.chat.completions.create(
+        model="gpt-4",
+        messages=[{"role": "user", "content": red_flags_prompt}]
+    ).choices[0].message.content
 
     with conn.cursor() as cur:
         cur.execute("SELECT id FROM users WHERE email = %s", (user_email,))

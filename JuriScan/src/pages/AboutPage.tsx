@@ -6,15 +6,17 @@ export default function AboutUsPage() {
       <Navbar />
 
       {/* Hero Header */}
-      <div className="w-full min-h-[25vh] bg-[#1A1C22] border-b border-[#2C2F36] flex items-center justify-center">
-        <h1 className="text-4xl font-bold text-center text-[#4F46E5] p-6">
+      <div className="w-full min-h-[25vh] bg-[#1A1C22] border-b border-[#2C2F36] flex items-center justify-center px-4">
+        {/* 🛠️ Added `px-4` for mobile side spacing */}
+        <h1 className="text-3xl md:text-4xl font-bold text-center text-[#4F46E5] p-4">
           About Us
         </h1>
       </div>
 
       {/* Main Content */}
-      <main className="px-6 py-12 bg-[#0F1117] text-[#E5E7EB] flex justify-center">
-        <section className="max-w-4xl w-full bg-[#1A1C22] rounded-xl p-8 md:p-12 shadow-md border border-[#2C2F36] animate-fade-in space-y-6 text-lg">
+      <main className="px-4 sm:px-6 py-10 bg-[#0F1117] text-[#E5E7EB] flex justify-center">
+        <section className="w-full max-w-4xl bg-[#1A1C22] rounded-xl p-6 sm:p-8 md:p-12 shadow-md border border-[#2C2F36] animate-fade-in space-y-6 text-base md:text-lg">
+          {/* 🛠️ Added `text-base md:text-lg` for better mobile font sizing */}
           <p>
             <strong>JuriScan</strong> is an AI-powered legal assistant platform designed to make legal document review fast, smart, and accessible. Whether you are a lawyer, a client, or someone reviewing terms and contracts, JuriScan helps you summarize, analyze, and understand critical legal information with ease.
           </p>
@@ -39,7 +41,8 @@ export default function AboutUsPage() {
           <div className="text-center sm:text-left">
             © {new Date().getFullYear()} JuriScan. All rights reserved.
           </div>
-          <div className="flex gap-6">
+          <div className="flex gap-6 flex-wrap justify-center">
+            {/* 🛠️ Added `flex-wrap` and `justify-center` for mobile wrapping */}
             <a href="/about" className="hover:text-[#4F46E5] transition-colors">About</a>
             <a href="/services" className="hover:text-[#4F46E5] transition-colors">Services</a>
             <a href="/contact" className="hover:text-[#4F46E5] transition-colors">Contact</a>
@@ -47,7 +50,7 @@ export default function AboutUsPage() {
         </div>
       </footer>
 
-      {/* Tailwind animation class (optional in globals.css) */}
+      {/* Tailwind animation class */}
       <style>
         {`
           @keyframes fade-in {
