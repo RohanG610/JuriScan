@@ -1,6 +1,10 @@
 # 📄 JuriScan – AI-Powered Legal Document Analyzer
 ---
 
+![Dashboard Screenshot 1](./images/screenshot1.png)  
+![Live Chat Interface](./images/screenshot2.png)  
+![Red Flag & Summary View](./images/screenshot3.png)
+
 ## 🚀 Overview
 
 **JuriScan** is an AI-enhanced web application designed to simplify the legal review process. Upload legal documents such as contracts or agreements and instantly receive:
